@@ -18,4 +18,4 @@ Example usage:
 
 * Better example than factorial, since 32-bit Emacs overflows so 32!
   is 0.
-
+* Unit tests
