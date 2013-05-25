@@ -1,4 +1,26 @@
-;; tco.el --- tail-call optimisation -*- lexical-binding: t -*-
+;;; tco.el --- tail-call optimisation for Emacs lisp -*- lexical-binding: t -*-
+
+;; Copyright (C) 2013 Wilfred Hughes
+
+;; Author: Wilfred Hughes <me@wilfred.me.uk>
+;; Version: 0.2
+;; Package-Requires: ((dash "1.2.0"))
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Code:
+
 (require 'dash)
 (eval-when-compile (require 'cl))
 
@@ -33,9 +55,6 @@ with a lambda expression that returns the result of the FUN-NAME call."
              (setq ,result (funcall ,result)))
            ,result)))))
 
-;; example usage
-(defun-tco fact (x &optional accum)
-  (setq accum (or accum 1))
-  (if (eql x 1) accum
-    (fact (1- x) (* accum x))))
+(provide 'tco)
+;;; tco.el ends here
 
