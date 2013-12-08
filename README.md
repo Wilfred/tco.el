@@ -13,8 +13,8 @@ Example usage:
       accum
     (sum (1- n) (+ accum n))))
 
-;; values greater than `max-lisp-eval-depth'
-;; would cause stack overflow here:
+;; Without TCO, values greater than `max-lisp-eval-depth' (usually
+;; 600) would cause stack overflow here:
 (sum 700)
 ```
 
