@@ -3,19 +3,21 @@
 
 Example usage:
 
-    (require 'tco)
-    
-    (defun-tco fact (x &optional accum)
-      (setq accum (or accum 1))
-      (if (eql x 1) accum
-        (fact (1- x) (* accum x))))
+```lisp
+(require 'tco)
+(setq lexical-binding 't)
 
-    ;; values greater than `max-lisp-eval-depth'
-    ;; would cause stack overflow here:
-    (fact 700)
+(defun-tco sum (n &optional accum)
+  (setq accum (or accum 0))
+  (if (zerop n)
+      accum
+    (sum (1- n) (+ accum n))))
+
+;; values greater than `max-lisp-eval-depth'
+;; would cause stack overflow here:
+(sum 700)
+```
 
 ## Todo
 
-* Better example than factorial, since 32-bit Emacs overflows so 32!
-  is 0.
 * Unit tests
