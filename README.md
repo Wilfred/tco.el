@@ -2,7 +2,8 @@
 ** Tail call optimisation for Emacs lisp **
 
 tco.el provides tail-call optimisation for functions in elisp that
-call themselves. Mutually recursive functions are unchanged.
+call themselves in tail-position. Mutually recursive functions are
+unchanged.
 
 It works by replacing each self-call with a thunk, and wrapping the
 function body in a loop that repeatedly evaluates the thunk. Roughly
