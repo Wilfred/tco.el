@@ -31,6 +31,7 @@ Is rewritten as follows:
 ## Example
 
 ```lisp
+;; -*- lexical-binding: t -*-
 (require 'tco)
 (setq lexical-binding 't)
 
