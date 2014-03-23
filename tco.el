@@ -4,7 +4,7 @@
 
 ;; Author: Wilfred Hughes <me@wilfred.me.uk>
 ;; Version: 0.2
-;; Package-Requires: ((dash "1.2.0"))
+;; Package-Requires: ((dash "1.2.0") (emacs "24"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 
 ;; It works by replacing each self-call with a thunk, and wrapping the
 ;; function body in a loop that repeatedly evaluates the thunk.  Roughly
-;; speaking, a function `foo`:
+;; speaking, a function `foo':
 
 ;; \(defun-tco foo (...)
 ;;   (...)
