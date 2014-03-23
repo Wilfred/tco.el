@@ -19,12 +19,36 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+;;; Commentary:
+;; tco.el provides tail-call optimisation for functions in elisp that
+;; call themselves in tail-position.
+
+;; It works by replacing each self-call with a thunk, and wrapping the
+;; function body in a loop that repeatedly evaluates the thunk.  Roughly
+;; speaking, a function `foo`:
+
+;; \(defun-tco foo (...)
+;;   (...)
+;;   (foo (...)))
+
+;; Is rewritten as follows:
+
+;; \(defun foo (...)
+;;    (flet (foo-thunk (...)
+;;                (...)
+;;                (lambda () (foo-thunk (...))))
+;;      (let ((result (apply foo-thunk (...))))
+;;        (while (functionp result)
+;;          (setq result (funcall result)))
+;;        result)))
+
 ;;; Code:
 
 (require 'dash)
 (eval-when-compile (require 'cl))
 
-(setq lexical-binding 't)
+(setq lexical-binding t)
 
 (defun tco-add-trampoline (fun-name new-name form)
   "Given quoted soure FORM, replace calls to FUN-NAME (a symbol)
@@ -43,6 +67,8 @@ with a lambda expression that returns the result of the FUN-NAME call."
 ;; todo: preserve function arity to improve byte-compiler warnings
 ;; todo: docstring support
 (defmacro defun-tco (function-name args &rest body)
+  "Defines a function FUNCTION-NAME with self-tail-call optimisation.
+BODY must contain calls to FUNCTION-NAME in the tail position."
   (let* ((name (make-symbol "trampolined-function"))
          (trampolined
           (tco-add-trampoline function-name name body))
