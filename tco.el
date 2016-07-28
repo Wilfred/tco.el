@@ -35,7 +35,7 @@
 ;; Is rewritten as follows:
 
 ;; \(defun foo (...)
-;;    (flet (foo-thunk (...)
+;;    (cl-flet (foo-thunk (...)
 ;;                (...)
 ;;                (lambda () (foo-thunk (...))))
 ;;      (let ((result (apply foo-thunk (...))))
@@ -88,7 +88,7 @@ BODY must contain calls to FUNCTION-NAME in the tail position."
          (fun-args (make-symbol "outer-fun-args"))
          (result (make-symbol "trampolined-result")))
     `(defun ,function-name (&rest ,fun-args)
-       (flet ((,name ,args ,@trampolined))
+       (cl-flet ((,name ,args ,@trampolined))
          (let ((,result (apply ',name ,fun-args)))
            (while (functionp ,result)
              (setq ,result (funcall ,result)))
