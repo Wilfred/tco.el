@@ -50,19 +50,6 @@
 
 (setq lexical-binding t)
 
-;; TODO: handle &rest in FUN-SPEC too.
-(defun tco--call->assignment (form fun-spec)
-  "Given a quoted FORM that represents a recursive call, rewrite as assignment.
-FUN-SPEC is the argument list for the original recursive function.
-
-Example: We rewrite:
-  (foo x (+ y 1))
-To:
-  (setq bar x baz (+ y 1))"
-  (let ((arg-names (--filter (not (equal '&optional it)) fun-spec))
-        (actual-args (rest form)))
-    `(setq ,@(-interleave arg-names actual-args))))
-
 (defun tco-add-trampoline (fun-name new-name form)
   "Given quoted source FORM, replace calls to FUN-NAME (a symbol)
 with a lambda expression that returns the result of the FUN-NAME call."
