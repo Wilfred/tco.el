@@ -1,6 +1,8 @@
 # tco.el
 **Tail call optimisation for Emacs lisp**
 
+[![Build Status](https://travis-ci.org/Wilfred/tco.el.svg?branch=master)](https://travis-ci.org/Wilfred/tco.el)
+
 tco.el provides tail-call optimisation for functions in elisp that
 call themselves in tail-position. Mutually recursive functions are
 unchanged.
