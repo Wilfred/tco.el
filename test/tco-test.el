@@ -1,4 +1,6 @@
-;; -*- lexical-binding: t -*-
+;;; tco-test.el --- Tests for tco.el -*- lexical-binding: t -*-
+
+;;; Code:
 (require 'ert)
 (require 'tco)
 
@@ -13,3 +15,5 @@
   (let ((num 1000))
     (should (> num max-lisp-eval-depth))
     (sum num)))
+
+;;; tco-test.el ends here
