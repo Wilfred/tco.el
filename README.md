@@ -53,3 +53,8 @@ Is rewritten as follows:
 Due to
 [a bug in cl-letf in Emacs 24.3.1](http://emacs.stackexchange.com/questions/3450/whats-the-correct-replacement-for-flet-on-new-emacsen#comment5015_3452),
 this package will not work on Emacs 24.3.1.
+
+## Other Projects
+
+[recur](https://github.com/VincentToups/recur) also offers TCO for
+self-tail recursion.
