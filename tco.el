@@ -85,6 +85,17 @@ BODY must contain calls to FUNCTION-NAME in the tail position."
              (setq ,result-sym (funcall (cdr ,result-sym))))
            ,result-sym)))))
 
+;; style defun-tco like defun
+(font-lock-add-keywords
+ 'emacs-lisp-mode
+ `((,(rx
+      symbol-start "defun-tco" symbol-end
+      (1+ space)
+      (group symbol-start
+             (+ (or (syntax word) (syntax symbol)))
+             symbol-end))
+    (1 font-lock-function-name-face nil t))))
+
 (provide 'tco)
 ;;; tco.el ends here
 
