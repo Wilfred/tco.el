@@ -12,7 +12,7 @@
 
 (ert-deftest tco-readme-test ()
   "Ensure the example in the readme works as claimed."
-  (let ((num 1000))
+  (let ((num 2000))
     (should (> num max-lisp-eval-depth))
     (tco-sum num)))
 
