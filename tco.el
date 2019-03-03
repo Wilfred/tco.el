@@ -76,7 +76,7 @@ BODY must contain calls to FUNCTION-NAME in the tail position."
        ,docstring
        (cl-letf (((symbol-function ',name)
                   (lambda ,args ,@trampolined)))
-         (let ((,result (apply ',name ,fun-args)))
+         (let ((,result (apply #',name ,fun-args)))
            (while (functionp ,result)
              (setq ,result (funcall ,result)))
            ,result)))))
