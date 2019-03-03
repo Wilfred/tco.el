@@ -48,8 +48,6 @@
 (require 'dash)
 (eval-when-compile (require 'cl))
 
-(setq lexical-binding t)
-
 (defun tco-add-trampoline (fun-name new-name form)
   "Given quoted source FORM, replace calls to FUN-NAME (a symbol)
 with a lambda expression that returns the result of the FUN-NAME call."
