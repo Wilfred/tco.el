@@ -63,16 +63,17 @@ with a lambda expression that returns the result of the FUN-NAME call."
 ;; todo: error if not in tail position
 ;; todo: macro-expand function body first
 ;; todo: preserve function arity to improve byte-compiler warnings
-;; todo: docstring support
-(defmacro defun-tco (function-name args &rest body)
+(defmacro defun-tco (function-name args &optional docstring &rest body)
   "Defines a function FUNCTION-NAME with self-tail-call optimisation.
 BODY must contain calls to FUNCTION-NAME in the tail position."
+  (declare (doc-string 3) (indent 2))
   (let* ((name (make-symbol "trampolined-function"))
          (trampolined
           (tco-add-trampoline function-name name body))
          (fun-args (make-symbol "outer-fun-args"))
          (result (make-symbol "trampolined-result")))
     `(defun ,function-name (&rest ,fun-args)
+       ,docstring
        (cl-letf (((symbol-function ',name)
                   (lambda ,args ,@trampolined)))
          (let ((,result (apply ',name ,fun-args)))

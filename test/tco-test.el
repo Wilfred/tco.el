@@ -5,6 +5,7 @@
 (require 'tco)
 
 (defun-tco tco-sum (n &optional accum)
+  "Sum up the numbers in N, adding to ACCUM."
   (setq accum (or accum 0))
   (if (zerop n)
       accum
