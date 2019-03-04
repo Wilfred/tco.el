@@ -1,6 +1,6 @@
 ;;; tco.el --- tail-call optimisation for Emacs lisp -*- lexical-binding: t -*-
 
-;; Copyright (C) 2013 Wilfred Hughes
+;; Copyright (C) 2013, 2016, 2017, 2019 Wilfred Hughes
 
 ;; Author: Wilfred Hughes <me@wilfred.me.uk>
 ;; Version: 0.3
