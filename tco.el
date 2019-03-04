@@ -3,7 +3,7 @@
 ;; Copyright (C) 2013 Wilfred Hughes
 
 ;; Author: Wilfred Hughes <me@wilfred.me.uk>
-;; Version: 0.2
+;; Version: 0.3
 ;; Package-Requires: ((dash "1.2.0") (emacs "24"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -28,36 +28,38 @@
 ;; function body in a loop that repeatedly evaluates the thunk.  Roughly
 ;; speaking, a function `foo':
 
-;; \(defun-tco foo (...)
+;; (defun-tco foo (...)
 ;;   (...)
 ;;   (foo (...)))
 
 ;; Is rewritten as follows:
 
-;; \(defun foo (...)
+;; (defun foo (...)
 ;;    (cl-flet (foo-thunk (...)
 ;;                (...)
 ;;                (lambda () (foo-thunk (...))))
-;;      (let ((result (apply foo-thunk (...))))
-;;        (while (functionp result)
-;;          (setq result (funcall result)))
-;;        result)))
+;;      (let ((result-sym (apply foo-thunk (...))))
+;;        (while (is-trampoline-result-p result-sym)
+;;          (setq result-sym (funcall (unwrap result-sym))))
+;;        result-sym)))
 
 ;;; Code:
 
 (require 'dash)
 (eval-when-compile (require 'cl))
 
-(defun tco-add-trampoline (fun-name new-name form)
+(defun tco--add-trampoline (fun-name new-name form sentinel-sym)
   "Given quoted source FORM, replace calls to FUN-NAME (a symbol)
-with a lambda expression that returns the result of the FUN-NAME call."
+with a lambda expression that returns the result-sym of the FUN-NAME call."
   (--map
    (cond
+    ((eq (car-safe it) fun-name)
+     `(cons ',sentinel-sym
+            (lambda () (,new-name ,@(cdr it)))))
     ((consp it)
-     (if (eq (car it) fun-name)
-         `(lambda () (,new-name ,@(cdr it)))
-       (tco-add-trampoline fun-name new-name it)))
-    ('t it))
+     (tco--add-trampoline fun-name new-name it sentinel-sym))
+    (t
+     it))
    form))
 
 ;; todo: error if not in tail position
@@ -68,18 +70,20 @@ with a lambda expression that returns the result of the FUN-NAME call."
 BODY must contain calls to FUNCTION-NAME in the tail position."
   (declare (doc-string 3) (indent 2))
   (let* ((name (make-symbol "trampolined-function"))
+         (sentinel-sym (make-symbol "tco-sentinel-symbol"))
          (trampolined
-          (tco-add-trampoline function-name name body))
+          (tco--add-trampoline
+           function-name name body sentinel-sym))
          (fun-args (make-symbol "outer-fun-args"))
-         (result (make-symbol "trampolined-result")))
+         (result-sym (make-symbol "trampolined-result")))
     `(defun ,function-name (&rest ,fun-args)
        ,docstring
        (cl-letf (((symbol-function ',name)
                   (lambda ,args ,@trampolined)))
-         (let ((,result (apply #',name ,fun-args)))
-           (while (functionp ,result)
-             (setq ,result (funcall ,result)))
-           ,result)))))
+         (let ((,result-sym (apply #',name ,fun-args)))
+           (while (eq (car-safe ,result-sym) ',sentinel-sym)
+             (setq ,result-sym (funcall (cdr ,result-sym))))
+           ,result-sym)))))
 
 (provide 'tco)
 ;;; tco.el ends here

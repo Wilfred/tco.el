@@ -32,4 +32,14 @@
       (tco-map nums #'1+)
       '(2 3 4 5)))))
 
+(defun-tco tco-returns-fn ()
+  "We should be able to return lambda from TCO functions."
+  (lambda () 42))
+
+(ert-deftest tco-returns-fn ()
+  (should
+   (equal
+    (funcall (tco-returns-fn))
+    42)))
+
 ;;; tco-test.el ends here
