@@ -35,7 +35,6 @@ Is rewritten as follows:
 ```lisp
 ;; -*- lexical-binding: t -*-
 (require 'tco)
-(setq lexical-binding 't)
 
 (defun-tco sum (n &optional accum)
   (setq accum (or accum 0))
