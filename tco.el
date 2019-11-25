@@ -46,7 +46,7 @@
 ;;; Code:
 
 (require 'dash)
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))
 
 (defun tco--add-trampoline (fun-name new-name form sentinel-sym)
   "Given quoted source FORM, replace calls to FUN-NAME (a symbol)
