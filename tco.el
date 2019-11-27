@@ -1,10 +1,11 @@
-;;; tco.el --- tail-call optimisation for Emacs lisp -*- lexical-binding: t -*-
+;;; tco.el --- Tail-call optimisation for Emacs lisp -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2013, 2016, 2017, 2019 Wilfred Hughes
 
 ;; Author: Wilfred Hughes <me@wilfred.me.uk>
 ;; Version: 0.3
-;; Package-Requires: ((dash "1.2.0") (emacs "24"))
+;; URL: https://github.com/Wilfred/tco.el
+;; Package-Requires: ((dash "1.2.0") (emacs "24.3"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
